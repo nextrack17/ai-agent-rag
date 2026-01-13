@@ -1,15 +1,18 @@
 import os
+from pathlib import Path
 from app.embeddings import build_faiss_index, embed_texts
 
-def load_documents(doc_path="app/documents"):
+BASE_DIR = Path(__file__).resolve().parent
+
+def load_documents():
+    docs_path = BASE_DIR / "documents"
+
     texts = []
     sources = []
 
-    for file in os.listdir(doc_path):
-        if file.endswith(".txt"):
-            with open(os.path.join(doc_path, file), "r", encoding="utf-8") as f:
-                texts.append(f.read())
-                sources.append(file)
+    for file in docs_path.glob("*.txt"):
+        texts.append(file.read_text(encoding="utf-8"))
+        sources.append(file.name)
 
     return texts, sources
 
