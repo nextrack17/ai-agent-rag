@@ -1,6 +1,5 @@
-import os
 from pathlib import Path
-from app.embeddings import build_index, embed_texts, search_index
+from app.embeddings import embed_texts
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,6 +24,9 @@ def load_documents():
 
 
 def retrieve_relevant_chunks(query, texts, top_k=2):
+    if not texts:
+        return []
+    
     query_embedding = embed_texts([query])[0]
     text_embeddings = embed_texts(texts)
 
