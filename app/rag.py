@@ -10,14 +10,25 @@ def load_documents():
     texts = []
     sources = []
 
+    if not docs_path.exists():
+        print("documents folder not found")
+        return texts, sources
+
     for file in docs_path.glob("*.txt"):
-        texts.append(file.read_text(encoding="utf-8"))
-        sources.append(file.name)
+        try:
+            texts.append(file.read_text(encoding="utf-8"))
+            sources.append(file.name)
+        except Exception as e:
+            print(f"Error reading {file}: {e}")
 
     return texts, sources
 
-def retrieve_relevant_chunks(query, index, texts, top_k=2):
-    query_embedding = embed_texts([query])
-    indices = search_index(query_embedding, index, top_k)
-    return [texts[i] for i in indices]
 
+def retrieve_relevant_chunks(query, texts, top_k=2):
+    query_embedding = embed_texts([query])[0]
+    text_embeddings = embed_texts(texts)
+
+    scores = text_embeddings @ query_embedding
+    top_indices = scores.argsort()[-top_k:][::-1]
+
+    return [texts[i] for i in top_indices]
