@@ -15,7 +15,13 @@ sources = []
 @app.on_event("startup")
 def startup_event():
     global texts, sources
-    texts, sources = load_documents()
+    try:
+        texts, sources = load_documents()
+        print(f"Loaded {len(texts)} documents")
+    except Exception as e:
+        print("Startup failed:", e)
+        texts, sources = [], []
+
 
 
 class AskRequest(BaseModel):
