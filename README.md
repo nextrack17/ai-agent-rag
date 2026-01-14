@@ -37,7 +37,7 @@ User → FastAPI (`/ask`) → AI Agent (Decision Logic)
 ### Endpoint
 
 
-POST
+## POST
 
 ### Request Body
 ```json
@@ -46,14 +46,15 @@ POST
   "session_id": "optional"
 }
 
-Response
+### Response
+
 {
   "answer": "string",
   "source": ["doc1.txt", "doc2.txt"]
 }
 
 
-Local Setup
+## Local Setup
 
 git clone https://github.com/nextrack17/ai-agent-rag.git
 cd ai-agent-rag
@@ -63,47 +64,47 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 
 
-Open:
+## Open:
 
     http://127.0.0.1:8000/docs
 
 
-Azure Deployment
+## Azure Deployment
 
 - Create Azure App Service (Linux, Python 3.10)
 - Connect GitHub repository via Deployment Center
 - Set Startup Command:
    gunicorn app.main:app -k uvicorn.workers.UvicornWorker --workers 1 --timeout 120
 
-Restart the app
-Access live API via:
+## Restart the app
+### Access live API via:
 
     https://ai-agent-rag-nextrack-h7fyfpfzajf7bgad.southindia-01.azurewebsites.net/
 
 
 
-Design Decisions
+## Design Decisions
 
-Agent Routing
+### Agent Routing
 
 - Implemented lightweight, deterministic routing logic to decide whether document retrieval is required.
 - Keeps behavior transparent and easy to evaluate.
 
-Retrieval Strategy (Important Note)
+## Retrieval Strategy (Important Note)
 
 - FAISS was used during local development for vector-based retrieval.
 - During Azure deployment (Free F1 tier), FAISS caused native dependency/runtime issues.
 - To ensure deployment stability and reliability, FAISS was replaced with a lightweight in-memory retrieval mechanism for    the deployed version.
 
 
-Session Memory
+## Session Memory
 
 - Implemented simple in-memory session tracking using session_id.
 - Demonstrates agent memory without external stateful services.
 
 
 
-Limitations:
+## Limitations:
 
 - No authentication or authorization.
 - In-memory document retrieval (not optimized for large-scale datasets).
@@ -112,7 +113,7 @@ Limitations:
 
 
 
-Future Improvements
+## Future Improvements
 
 - Re-enable FAISS or Azure AI Search on paid Azure plans.
 - Integrate Azure OpenAI embeddings and chat completions.
@@ -121,7 +122,7 @@ Future Improvements
 - Improve agent decision-making using LLM-based tool selection.
 
 
-Live Deployment
+## Live Deployment
 - Base URL:
    https://ai-agent-rag-nextrack-h7fyfpfzajf7bgad.southindia-01.azurewebsites.net/
 
@@ -130,8 +131,8 @@ Live Deployment
 
 
 
-Author
-  -Divyanshu Pandey
+### Author
+    -Divyanshu Pandey
 
 
 
